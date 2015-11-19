@@ -9,7 +9,8 @@ const createLogger = ({ scope="ROOT", debug }) => {
 		'@DISPATCH': () => {
 			timeStore[scope] = getTime()
 		},
-		'@DID_UPDATE': ({ key, value, currentState, nextState }) => {
+		'@DID_UPDATE': data => {
+			let { key, value, currentState, nextState } = data
 			const time = new Date()
 			const formattedTime = `${ time.getHours() }:${ pad(time.getMinutes()) }:${ pad(time.getSeconds()) }`
 			const takeTime = (getTime() - timeStore[scope]).toFixed(2)
@@ -34,6 +35,8 @@ const createLogger = ({ scope="ROOT", debug }) => {
 			} catch (e) {
 				console.log('-- log end --')
 			}
+
+			return data
 		},
 		'@THROW_ERROR': error => {
 			if (debug) {
