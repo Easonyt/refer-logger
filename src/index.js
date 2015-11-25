@@ -6,10 +6,11 @@ const getTime = typeof performance !== 'undefined' ? () =>  performance.now() : 
 
 const createLogger = ({ scope="ROOT", debug }) => {
 	const logger = {
-		'@DISPATCH': () => {
+		DISPATCH: data => {
 			timeStore[scope] = getTime()
+			return data
 		},
-		'@DID_UPDATE': data => {
+		DID_UPDATE: data => {
 			let { key, value, currentState, nextState } = data
 			const time = new Date()
 			const formattedTime = `${ time.getHours() }:${ pad(time.getMinutes()) }:${ pad(time.getSeconds()) }`
@@ -38,7 +39,7 @@ const createLogger = ({ scope="ROOT", debug }) => {
 
 			return data
 		},
-		'@THROW_ERROR': error => {
+		THROW_ERROR: error => {
 			if (debug) {
 				throw error
 			}
