@@ -2,7 +2,7 @@ const attr = 'info' in console ? 'info' : "log"
 const pad = num => ('0' + num).slice(-2)
 
 const timeStore = {}
-const getTime = typeof performance !== 'undefined' ? () =>  performance.now() : () => new Date().getTime()
+const getTime = () => new Date().getTime()
 
 const createLogger = ({ scope="ROOT", debug }) => {
 	const logger = {
@@ -27,9 +27,15 @@ const createLogger = ({ scope="ROOT", debug }) => {
 				}
 			}
 
-			console[attr](`%c value`, `color: #03A9F4; font-weight: bold`, value)
-			console[attr](`%c prev state`, `color: #9E9E9E; font-weight: bold`, currentState)
-			console[attr](`%c next state`, `color: #4CAF50; font-weight: bold`, nextState)
+			if (attr === 'log') {
+				console[attr](value)
+				console[attr](currentState)
+				console[attr](nextState)
+			} else {
+				console[attr](`%c value`, `color: #03A9F4; font-weight: bold`, value)
+				console[attr](`%c prev state`, `color: #9E9E9E; font-weight: bold`, currentState)
+				console[attr](`%c next state`, `color: #4CAF50; font-weight: bold`, nextState)
+			}
 
 			try {
 				console.groupEnd()
