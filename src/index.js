@@ -9,14 +9,14 @@ const getTime = typeof performance !== 'undefined' && performance.now
 const createLogger = ({ scope="ROOT", debug }) => {
 	const logger = {
 		DISPATCH: data => {
-			timeStore[scope] = getTime()
+			timeStore[data.key] = getTime()
 			return data
 		},
 		DID_UPDATE: data => {
 			let { key, value, currentState, nextState } = data
 			const time = new Date()
 			const formattedTime = `${ time.getHours() }:${ pad(time.getMinutes()) }:${ pad(time.getSeconds()) }`
-			const takeTime = (getTime() - timeStore[scope]).toFixed(2)
+			const takeTime = (getTime() - timeStore[key]).toFixed(2)
 			const message = `${ scope }: action [${ key }] end at ${ formattedTime }, take ${ takeTime }ms`
 
 			try {
